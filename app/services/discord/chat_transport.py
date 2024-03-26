@@ -7,7 +7,7 @@ from app.services.interface import Event
 
 
 class ChatTransportDiscord:
-    def __init__(self, bot_token: str):
+    def __init__(self):
         self._client = discord.Client(
             intents=discord.Intents.default()
         )
