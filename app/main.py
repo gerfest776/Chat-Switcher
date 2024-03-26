@@ -1,7 +1,7 @@
 import asyncio
 
 from app.config import settings
-from app.services.listener.service import SimpleBusinessLogic
+from app.listener import SimpleBusinessLogic
 
 
 async def main():
