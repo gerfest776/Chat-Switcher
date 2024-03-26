@@ -1,6 +1,5 @@
 from enum import Enum
 
-from aiogram import Bot
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 

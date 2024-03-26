@@ -1,6 +1,6 @@
 from typing import ClassVar
 
-from app.config import ChannelMode, settings
+from app.config import ChannelMode
 from app.services import ChatTransportTelegram
 from app.services.discord.chat_transport import ChatTransportDiscord
 from app.services.interface import ChatTransportServiceI, Event
