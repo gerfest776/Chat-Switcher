@@ -1,9 +1,11 @@
 from typing import Callable, NoReturn
 
 from aiogram import Dispatcher, Bot
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import Message
+from loguru import logger
 
 from app.services.interface import Event
-from app.services.telegram.exceptions import SendMessagePermissionError
 
 
 class ChatTransportTelegram:
@@ -11,30 +13,21 @@ class ChatTransportTelegram:
             self,
             channel_id: str,
             bot: Bot,
-            dispatcher: Dispatcher,
     ):
         self._channel = channel_id
         self._bot = bot
-        self._dispatcher = dispatcher
+        self._dispatcher = Dispatcher(storage=MemoryStorage())
 
     def add_handler(self, event: Event, handler: Callable) -> None | NoReturn:
         match event:
             case Event.MESSAGE:
-                self._check_rights_on_channel()
                 self._dispatcher.message.register(handler)
+                logger.info(f'Handler for message event added - {handler.__name__}')
 
-    async def _check_rights_on_channel(self) -> None | NoReturn:
-        permissions = await self._bot.get_chat_member(
-            chat_id=self._channel,
-            user_id=self._bot.id,
-        )
-        if not permissions.can_post_messages:
-            raise SendMessagePermissionError(channel=self._channel)
-
-    async def send_message(self, msg: str):
-        await self._bot.send_message(chat_id=self._channel, text=msg)
+    @staticmethod
+    async def send_message(message: Message, text: str, **_):
+        await message.answer(f'{text}: {message.text}')
 
     async def run(self):
-        await self._dispatcher.start_polling()
-
+        await self._dispatcher.start_polling(self._bot)
 

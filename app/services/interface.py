@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Protocol
+from typing import Protocol, Callable
 
 
 class Event(str, Enum):
@@ -7,10 +7,10 @@ class Event(str, Enum):
 
 
 class ChatTransportServiceI(Protocol):
-    def add_handler(self, event: Event) -> None:
+    def add_handler(self, event: Event, handler: Callable) -> None:
         ...
 
-    async def send_message(self, msg: str) -> str:
+    async def send_message(self, text, *args, **kwargs) -> None:
         ...
 
     async def run(self) -> None:
