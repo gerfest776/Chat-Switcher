@@ -1,3 +1,5 @@
+from typing import Callable, Coroutine, Any
+
 import discord
 from discord import Message
 from loguru import logger
@@ -20,7 +22,7 @@ class ChatTransportDiscord:
     async def send_message(message: Message, text: str):
         await message.channel.send(text)
 
-    def add_handler(self, event: Event, handler):
+    def add_handler(self, event: Event, handler: Callable[[Any], Coroutine]):
         match event:
             case Event.MESSAGE:
                 @self._client.event

@@ -1,4 +1,4 @@
-from typing import Callable, NoReturn
+from typing import Callable, NoReturn, Coroutine, Any
 
 from aiogram import Dispatcher, Bot
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -14,7 +14,7 @@ class ChatTransportTelegram:
         self._bot = Bot(token=settings.BOT_TOKEN)
         self._dispatcher = Dispatcher(storage=MemoryStorage())
 
-    def add_handler(self, event: Event, handler: Callable) -> None | NoReturn:
+    def add_handler(self, event: Event, handler: Callable[[Any], Coroutine]) -> None | NoReturn:
         match event:
             case Event.MESSAGE:
                 self._dispatcher.message.register(handler)

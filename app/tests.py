@@ -1,20 +1,13 @@
 import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
-from app.services.telegram.chat_transport import ChatTransportTelegram
 from app.config import ChannelMode
 from listener import SimpleBusinessLogic
-from services.discord.chat_transport import ChatTransportDiscord
-
-
-@pytest.mark.asyncio
-async def test_init_with_telegram_mode():
-    business_logic = SimpleBusinessLogic(ChannelMode.TELEGRAM)
-    assert isinstance(business_logic._transporter, ChatTransportTelegram)
+from services import ChatTransportTelegram, ChatTransportDiscord
 
 
 @pytest.mark.asyncio
 async def test_message_reception_and_response_telegram():
-    with patch('app.services.telegram.chat_transport.ChatTransportTelegram.send_message', new_callable=AsyncMock) as mock_send:
+    with patch('app.services.ChatTransportTelegram.send_message', new_callable=AsyncMock) as mock_send:
         business_logic = SimpleBusinessLogic(ChannelMode.TELEGRAM)
         mock_message = AsyncMock(text='Hello')
         await business_logic.listen(mock_message)

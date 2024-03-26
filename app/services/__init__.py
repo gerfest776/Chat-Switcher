@@ -1,6 +1,4 @@
-from .telegram.chat_transport import ChatTransportTelegram
+from .discord import ChatTransportDiscord
+from .telegram import ChatTransportTelegram
 
-
-__all__ = ['ChatTransportTelegram']
-
-
+__all__ = ['ChatTransportDiscord', 'ChatTransportTelegram']
