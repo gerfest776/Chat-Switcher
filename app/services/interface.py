@@ -10,7 +10,7 @@ class ChatTransportServiceI(Protocol):
     def add_handler(self, event: Event, handler: Callable) -> None:
         ...
 
-    async def send_message(self, text, *args, **kwargs) -> None:
+    async def send_message(self, message, text: str) -> None:
         ...
 
     async def run(self) -> None:

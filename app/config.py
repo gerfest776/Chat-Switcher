@@ -18,9 +18,5 @@ class BotSettings(BaseSettings):
     DISCORD_TOKEN: str
     MODE: ChannelMode
 
-    @property
-    def bot(self) -> Bot:
-        return Bot(token=self.BOT_TOKEN)
-
 
 settings = BotSettings()

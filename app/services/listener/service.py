@@ -21,9 +21,9 @@ class SimpleBusinessLogic:
     def _init_transporter(self, mode: ChannelMode) -> ChatTransportServiceI:
         match mode:
             case ChannelMode.TELEGRAM:
-                transporter = ChatTransportTelegram(bot=settings.bot)
+                transporter = ChatTransportTelegram()
             case ChannelMode.DISCORD:
-                transporter = ChatTransportDiscord(bot_token='YOUR_DISCORD_TOKEN')
+                transporter = ChatTransportDiscord()
             case _:
                 raise ValueError(f'Unknown mode - {mode}')
         transporter.add_handler(event=Event.MESSAGE, handler=self.listen)
