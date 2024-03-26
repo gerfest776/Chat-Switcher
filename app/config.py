@@ -15,19 +15,12 @@ class ChannelMode(str, Enum):
 
 class BotSettings(BaseSettings):
     BOT_TOKEN: str
-    ADMIN_ID: int
+    DISCORD_TOKEN: str
     MODE: ChannelMode
-
-    TRANSPORT_CHANNEL_ID: str
-    TRANSPORT_CHANNEL_TELEGRAM_TOKEN: str
 
     @property
     def bot(self) -> Bot:
         return Bot(token=self.BOT_TOKEN)
-
-    @property
-    def trasnporter_bot(self) -> Bot:
-        return Bot(token=self.TRANSPORT_CHANNEL_TELEGRAM_TOKEN)
 
 
 settings = BotSettings()

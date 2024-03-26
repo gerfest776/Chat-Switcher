@@ -2,6 +2,7 @@ from typing import ClassVar
 
 from app.config import ChannelMode, settings
 from app.services import ChatTransportTelegram
+from app.services.discord.chat_transport import ChatTransportDiscord
 from app.services.interface import ChatTransportServiceI, Event
 
 
@@ -11,20 +12,22 @@ class SimpleBusinessLogic:
     def __init__(self, mode: ChannelMode):
         self._transporter: ChatTransportServiceI = self._init_transporter(mode)
 
-    async def listen(self, *args, **kwargs) -> None:
+    async def listen(self, message) -> None:
+        content = self._transporter.extract_text(message)
         await self._transporter.send_message(
-            text=self.RECEIVED_TEXT, *args, **kwargs
+            message, text=f'{self.RECEIVED_TEXT}: {content}'
         )
 
     def _init_transporter(self, mode: ChannelMode) -> ChatTransportServiceI:
         match mode:
             case ChannelMode.TELEGRAM:
-                transporter = ChatTransportTelegram(
-                    channel_id=settings.TRANSPORT_CHANNEL_ID,
-                    bot=settings.trasnporter_bot,
-                )
-                transporter.add_handler(event=Event.MESSAGE, handler=self.listen)
-                return transporter
+                transporter = ChatTransportTelegram(bot=settings.bot)
+            case ChannelMode.DISCORD:
+                transporter = ChatTransportDiscord(bot_token='YOUR_DISCORD_TOKEN')
+            case _:
+                raise ValueError(f'Unknown mode - {mode}')
+        transporter.add_handler(event=Event.MESSAGE, handler=self.listen)
+        return transporter
 
     async def start(self):
         await self._transporter.run()

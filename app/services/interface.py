@@ -15,3 +15,6 @@ class ChatTransportServiceI(Protocol):
 
     async def run(self) -> None:
         ...
+
+    def extract_text(self, message) -> str:
+        ...

@@ -12,6 +12,8 @@ pyright = "^1.1.355"
 pydantic-settings = "^2.2.1"
 loguru = "^0.7.2"
 ruff = "^0.3.4"
+discord-py = "^2.3.2"
+discord = "^2.3.2"
 
 
 [build-system]

@@ -9,12 +9,7 @@ from app.services.interface import Event
 
 
 class ChatTransportTelegram:
-    def __init__(
-            self,
-            channel_id: str,
-            bot: Bot,
-    ):
-        self._channel = channel_id
+    def __init__(self, bot: Bot):
         self._bot = bot
         self._dispatcher = Dispatcher(storage=MemoryStorage())
 
@@ -23,10 +18,12 @@ class ChatTransportTelegram:
             case Event.MESSAGE:
                 self._dispatcher.message.register(handler)
                 logger.info(f'Handler for message event added - {handler.__name__}')
+            case _:
+                raise NotImplementedError(f'Handler for event {event} not implemented')
 
     @staticmethod
-    async def send_message(message: Message, text: str, **_):
-        await message.answer(f'{text}: {message.text}')
+    async def send_message(message: Message, text: str):
+        await message.answer(text)
 
     async def run(self):
         await self._dispatcher.start_polling(self._bot)
